@@ -7,8 +7,6 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform player;
 
     private Vector3 offset;
-    private InputManager input => DI.di.inputManager;
-    private float mouseSensitivity = 5.0f;
 
     private void Start()
     {

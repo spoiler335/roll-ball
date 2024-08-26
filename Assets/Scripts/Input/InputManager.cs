@@ -1,13 +1,21 @@
 using UnityEngine;
 
-public class InputManager
+public class InputManager : MonoBehaviour
 {
     private PlayerInput inputActions;
-    public InputManager()
+
+    private void Awake()
     {
         inputActions = new PlayerInput();
-        inputActions.Enable();
+        if (DI.di.inputManager == null)
+        {
+            DI.di.SetInputManager(this);
+            DontDestroyOnLoad(gameObject);
+        }
+        else Destroy(gameObject);
     }
+
+    private void OnEnable() => inputActions.Enable();
 
     public float GetFoward()
     {
@@ -23,4 +31,6 @@ public class InputManager
     {
         return inputActions.Player.LookRotaion.ReadValue<float>();
     }
+
+    private void OnDisable() => inputActions.Disable();
 }
