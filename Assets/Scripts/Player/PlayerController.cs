@@ -41,12 +41,21 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Gem gem;
-        if (other.TryGetComponent<Gem>(out gem))
+        Debug.Log($"OnTriggerEnter :: {other.name}");
+        if (other.TryGetComponent<Gem>(out var gem))
         {
             gem.GetComponent<BoxCollider>().enabled = false;
             Events.GEM_PICKED?.Invoke();
             Destroy(gem.gameObject, 0.1f);
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        Debug.Log($"OnCollisionEnter :: {other.gameObject.name}");
+        if (other.gameObject.TryGetComponent<SpikeObstacle>(out var spikeObstacle))
+        {
+            Events.PLAYER_TOUCHED_SPIKE.Invoke();
         }
     }
     private void OnDestroy() => UnsubscribeEvents();

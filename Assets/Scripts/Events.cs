@@ -8,5 +8,8 @@ public class Events
     public static UnityAction GEM_PICKED;
     public static UnityAction SPIKE_ENCOUNTERD;
     public static UnityAction UPDATE_SCORE_UI;
+    public static UnityAction PLAYER_TOUCHED_SPIKE;
+    public static UnityAction UPDATE_LIVES_UI;
     public static UnityAction<float> UPDATE_TIME_UI;
+
 }

@@ -10,6 +10,7 @@ public class GameplayUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI highScoreText;
     [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private TextMeshProUGUI livesText;
 
     // GameOver UI
     [Space(10)]
@@ -20,6 +21,7 @@ public class GameplayUIManager : MonoBehaviour
 
     private int score => DI.di.gameManager.score;
     private int highScore => DI.di.progressSaver.highestScore;
+    private int lives => DI.di.gameManager.lives;
 
     private void Awake()
     {
@@ -36,6 +38,7 @@ public class GameplayUIManager : MonoBehaviour
         Events.UPDATE_TIME_UI += UpdateTimerText;
         Events.GAME_STARTED += OnGameStarted;
         Events.GAME_OVER += OnGameOver;
+        Events.UPDATE_LIVES_UI += UpdateLives;
 
         restartButton.onClick.AddListener(RestartGame);
         quitButton.onClick.AddListener(QuitGame);
@@ -48,6 +51,7 @@ public class GameplayUIManager : MonoBehaviour
         Events.UPDATE_TIME_UI -= UpdateTimerText;
         Events.GAME_STARTED -= OnGameStarted;
         Events.GAME_OVER -= OnGameOver;
+        Events.UPDATE_LIVES_UI -= UpdateLives;
     }
 
     private void ShowBeginCountDown() => StartCoroutine(ShowBeginCountDownCou());
@@ -82,6 +86,7 @@ public class GameplayUIManager : MonoBehaviour
     {
         timerText.gameObject.SetActive(false);
         gameOverUI.SetActive(true);
+        livesText.gameObject.SetActive(false);
     }
 
     private void UpdateTimerText(float timeRemaining)
@@ -106,6 +111,11 @@ public class GameplayUIManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneConstants.MAIN_MENU_SCENE);
+    }
+
+    private void UpdateLives()
+    {
+        livesText.text = lives.ToString();
     }
 
     private void OnDestroy() => UnsubscribeEvents();

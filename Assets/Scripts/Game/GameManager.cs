@@ -23,12 +23,14 @@ public class GameManager : MonoBehaviour
     {
         Events.GEM_PICKED += OnGemPicked;
         Events.GAME_OVER += OnGameOver;
+        Events.PLAYER_TOUCHED_SPIKE += OnPlayerTouchedSpike;
     }
 
     public void UnsubscribeEvents()
     {
         Events.GEM_PICKED -= OnGemPicked;
         Events.GAME_OVER -= OnGameOver;
+        Events.PLAYER_TOUCHED_SPIKE -= OnPlayerTouchedSpike;
     }
 
     private void Start()
@@ -36,15 +38,15 @@ public class GameManager : MonoBehaviour
         score = 0;
         lives = 3;
         Events.UPDATE_SCORE_UI?.Invoke();
+        Events.UPDATE_LIVES_UI?.Invoke();
         StartCoroutine(StartGameAfterBeginCountDown());
     }
 
     private IEnumerator StartGameAfterBeginCountDown()
     {
-        Debug.Log($"Starting begin count down");
         Events.START_BEGIN_COUNTDOWN?.Invoke();
         yield return new WaitForSeconds(3);
-        Debug.Log($"Begin count down finished");
+        Debug.Log($"Starting Game After Begin Count Down");
         Events.GAME_STARTED?.Invoke();
     }
 
@@ -53,6 +55,16 @@ public class GameManager : MonoBehaviour
         score++;
         if (score > highestScore) highestScore = score;
         Events.UPDATE_SCORE_UI?.Invoke();
+    }
+
+    private void OnPlayerTouchedSpike()
+    {
+        lives--;
+        Events.UPDATE_LIVES_UI?.Invoke();
+        if (lives <= 0)
+        {
+            Events.GAME_OVER?.Invoke();
+        }
     }
 
     private void OnGameOver()
