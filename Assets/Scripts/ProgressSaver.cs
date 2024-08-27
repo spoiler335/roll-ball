@@ -9,7 +9,3 @@ public class ProgressSaver
     }
 }
 
-public static class PPF_Strings
-{
-    public const string HIGHEST_SCORE = "HighestScore";
-}

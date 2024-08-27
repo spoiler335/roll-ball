@@ -22,11 +22,13 @@ public class GameManager : MonoBehaviour
     private void SubscribeEvents()
     {
         Events.GEM_PICKED += OnGemPicked;
+        Events.GAME_OVER += OnGameOver;
     }
 
     public void UnsubscribeEvents()
     {
         Events.GEM_PICKED -= OnGemPicked;
+        Events.GAME_OVER -= OnGameOver;
     }
 
     private void Start()
@@ -51,6 +53,11 @@ public class GameManager : MonoBehaviour
         score++;
         if (score > highestScore) highestScore = score;
         Events.UPDATE_SCORE_UI?.Invoke();
+    }
+
+    private void OnGameOver()
+    {
+        Time.timeScale = 0;
     }
 
     private void OnDestroy() => UnsubscribeEvents();
