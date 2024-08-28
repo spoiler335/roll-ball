@@ -15,9 +15,12 @@ public class GameplayUIManager : MonoBehaviour
     // GameOver UI
     [Space(10)]
     [Header("Game Over UI elements")]
+    [SerializeField] private TextMeshProUGUI gameOverHeadingText;
     [SerializeField] private GameObject gameOverUI;
     [SerializeField] private Button restartButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private TextMeshProUGUI gameOverScoreText;
+    [SerializeField] private TextMeshProUGUI gameOverHighScoreText;
 
     private int score => DI.di.gameManager.score;
     private int highScore => DI.di.progressSaver.highestScore;
@@ -82,9 +85,26 @@ public class GameplayUIManager : MonoBehaviour
         highScoreText.text = highScore.ToString();
     }
 
-    private void OnGameOver()
+    private void OnGameOver(GameOver gameOver)
     {
+        switch (gameOver)
+        {
+            case GameOver.Lives:
+                gameOverHeadingText.text = "Out of Lives";
+                break;
+            case GameOver.Timeout:
+                gameOverHeadingText.text = "Out of time";
+                break;
+            case GameOver.Finish:
+                gameOverHeadingText.text = "Target Reached";
+                break;
+            case GameOver.Fall:
+                gameOverHeadingText.text = "Try To Stay On Track";
+                break;
+        }
         timerText.gameObject.SetActive(false);
+        gameOverScoreText.text = $"Score: {score}";
+        gameOverHighScoreText.text = $"High Score: {highScore}";
         gameOverUI.SetActive(true);
         livesText.gameObject.SetActive(false);
     }
@@ -119,4 +139,12 @@ public class GameplayUIManager : MonoBehaviour
     }
 
     private void OnDestroy() => UnsubscribeEvents();
+}
+
+public enum GameOver
+{
+    Lives,
+    Timeout,
+    Finish,
+    Fall
 }

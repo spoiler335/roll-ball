@@ -63,11 +63,11 @@ public class GameManager : MonoBehaviour
         Events.UPDATE_LIVES_UI?.Invoke();
         if (lives <= 0)
         {
-            Events.GAME_OVER?.Invoke();
+            Events.GAME_OVER?.Invoke(GameOver.Lives);
         }
     }
 
-    private void OnGameOver()
+    private void OnGameOver(GameOver gameOver)
     {
         Time.timeScale = 0;
     }

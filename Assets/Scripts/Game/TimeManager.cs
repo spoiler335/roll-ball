@@ -1,10 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
-    private const float TOTAL_GAME_TIME = 150;
+    private const float TOTAL_GAME_TIME = 60;
     private float remainingTime = -1;
 
 
@@ -37,7 +36,7 @@ public class TimeManager : MonoBehaviour
             Events.UPDATE_TIME_UI?.Invoke(remainingTime);
             yield return null;
         }
-        Events.GAME_OVER?.Invoke();
+        Events.GAME_OVER?.Invoke(GameOver.Timeout);
     }
 
     private void OnDestroy() => UnsubscribeEvents();
