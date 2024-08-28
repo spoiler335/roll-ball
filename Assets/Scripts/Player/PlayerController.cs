@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     private InputManager input => DI.di.inputManager;
     private bool inputEnabled = false;
     private float moveSpeed = 50f;
+    private bool hasPlayerfallen = false;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -30,6 +31,20 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         MoveOnPlayerInput();
+    }
+
+    private void Update()
+    {
+        CheckIfPlayerHasFallen();
+    }
+
+    private void CheckIfPlayerHasFallen()
+    {
+        if (!hasPlayerfallen && transform.position.y < -10f)
+        {
+            Events.GAME_OVER?.Invoke();
+            hasPlayerfallen = true;
+        }
     }
 
     private void MoveOnPlayerInput()
